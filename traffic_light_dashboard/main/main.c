@@ -9,50 +9,25 @@ Your project must
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "driver/gpio.h"
-#include "sdkconfig.h"
+#include "esp_log.h"
 
-#define RED_LIGHT_PIN 2
-#define YELLOW_LIGHT_PIN 4
-#define GREEN_LIGHT_PIN 5
+#define BLINK_GPIO GPIO_NUM_32
+#define BLINK_PERIOD_MS 1000
+
+static const char *TAG = "blink";
 
 void app_main(void)
 {
-    gpio_pad_select_gpio(RED_LIGHT_PIN);
-    gpio_set_direction(RED_LIGHT_PIN, GPIO_MODE_OUTPUT);
 
-    gpio_pad_select_gpio(YELLOW_LIGHT_PIN);
-    gpio_set_direction(YELLOW_LIGHT_PIN, GPIO_MODE_OUTPUT);
+    gpio_reset_pin(BLINK_GPIO);
+    ESP_ERROR_CHECK(gpio_set_direction(BLINK_GPIO, GPIO_MODE_OUTPUT));
 
-    gpio_pad_select_gpio(GREEN_LIGHT_PIN);
-    gpio_set_direction(GREEN_LIGHT_PIN, GPIO_MODE_OUTPUT);
-
+    uint32_t level = 0;
     while (1)
     {
-        // Turn on red light
-        printf("Red light is on\n");
-        gpio_set_level(RED_LIGHT_PIN, 1);
-        gpio_set_level(YELLOW_LIGHT_PIN, 0);
-        gpio_set_level(GREEN_LIGHT_PIN, 0);
-        vTaskDelay(pdMS_TO_TICKS(5000));
-
-        // Turn on yellow light
-        printf("Yellow light is on\n");
-        gpio_set_level(RED_LIGHT_PIN, 0);
-        gpio_set_level(YELLOW_LIGHT_PIN, 1);
-        gpio_set_level(GREEN_LIGHT_PIN, 0);
-        vTaskDelay(pdMS_TO_TICKS(2000));
-
-        // Turn on green light
-        printf("Green light is on\n");
-        gpio_set_level(RED_LIGHT_PIN, 0);
-        gpio_set_level(YELLOW_LIGHT_PIN, 0);
-        gpio_set_level(GREEN_LIGHT_PIN, 1);
-        vTaskDelay(pdMS_TO_TICKS(5000));
+        ESP_LOGI(TAG, "Turning the LED %s", level ? "ON" : "OFF");
+        gpio_set_level(BLINK_GPIO, level);
+        level = !level;
+        vTaskDelay(pdMS_TO_TICKS(BLINK_PERIOD_MS));
     }
-}
-
-int main()
-{
-    app_main();
-    return 0;
 }

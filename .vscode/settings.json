@@ -1,4 +1,13 @@
 {
   "idf.currentSetup": "C:\\esp\\v6.1\\esp-idf",
-  "cmake.sourceDirectory": "C:/Users/tina.zhen23/Documents/GitHub/esp32-testing/traffic_light_dashboard"
+  "cmake.sourceDirectory": "C:/Users/tina.zhen23/Documents/GitHub/esp32-testing/traffic_light_dashboard",
+  "idf.port": "COM3",
+  "idf.openOcdConfigs": ["board/esp32-bridge.cfg"],
+  "idf.customExtraVars": {},
+  "clangd.path": "C:\\Espressif\\tools\\esp-clangd\\esp-21.1.3_20260408\\esp-clangd\\bin\\clangd.exe",
+  "clangd.arguments": [
+    "--background-index",
+    "--query-driver=**",
+    "--compile-commands-dir=c:\\Users\\tina.zhen23\\Documents\\GitHub\\esp32-testing\\build"
+  ]
 }
